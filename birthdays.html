@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши дни рождения 🎂</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для страницы дней рождения */
+        .birthday-card {
+            background: white;
+            border-radius: 30px;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            border: 2px solid #f0b6c8;
+            transition: transform 0.2s;
+        }
+        .birthday-card:hover {
+            transform: scale(1.02);
+        }
+        .birthday-emoji {
+            font-size: 3.5em;
+        }
+        .birthday-name {
+            font-size: 2em;
+            color: #b34180;
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        .birthday-date {
+            font-size: 1.3em;
+            color: #555;
+        }
+        .birthday-timer {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #d4538c;
+            background: #fce4ec;
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin: 15px auto 5px;
+        }
+        .birthday-label {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        /* Секция чата поздравлений */
+        .chat-section {
+            background: rgba(255, 245, 247, 0.6);
+            padding: 25px 20px;
+            border-radius: 30px;
+            border: 1px solid #ffe2e8;
+            margin-top: 40px;
+        }
+        .chat-messages {
+            background: white;
+            border-radius: 25px;
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+        }
+        .chat-messages .message-my {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+            margin: 8px 0;
+            padding: 12px 18px;
+            border-radius: 20px 20px 5px 20px;
+            word-break: break-word;
+        }
+        .chat-messages .message-her {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+            margin: 8px 0;
+            padding: 12px 18px;
+            border-radius: 20px 20px 20px 5px;
+            word-break: break-word;
+        }
+        .message-author {
+            font-weight: bold;
+            color: #b34180;
+            margin-right: 8px;
+        }
+        .message-year {
+            font-size: 0.8em;
+            color: #888;
+            margin-left: 10px;
+            background: #f0f0f0;
+            padding: 2px 10px;
+            border-radius: 20px;
+        }
+        .chat-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .chat-author-select {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .chat-author-select label {
+            cursor: pointer;
+            font-weight: bold;
+            color: #b34180;
+        }
+        .chat-input-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .chat-input-row input {
+            flex: 1;
+            padding: 15px 20px;
+            border: 2px solid #f0d0da;
+            border-radius: 60px;
+            font-size: 1em;
+            outline: none;
+            background: white;
+        }
+        .chat-input-row input:focus {
+            border-color: #d4538c;
+            box-shadow: 0 0 0 4px #fce4ec;
+        }
+        .chat-input-row button {
+            background: #d4538c;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 60px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(212, 83, 140, 0.3);
+        }
+        .chat-input-row button:hover {
+            background: #b34180;
+            transform: scale(1.02);
+        }
+
+        .confetti-message {
+            text-align: center;
+            font-size: 1.8em;
+            color: #b34180;
+            margin: 20px 0;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #d4538c;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px dashed #f0b6c8;
+        }
+        .back-link:hover { color: #b34180; }
+
+        /* Стили для музыкальной кнопки (повторяем из других страниц) */
+        .music-btn {
+            background: linear-gradient(135deg, #d4538c, #b34180);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            border-radius: 60px;
+            font-size: 1.3em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(212, 83, 140, 0.4);
+            transition: transform 0.2s;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        .music-btn:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎂 Наши дни рождения</h1>
+            <p>Самые важные даты в году ❤️</p>
+        </header>
+
+        <!-- Карточка для тебя -->
+        <div class="birthday-card">
+            <div class="birthday-emoji">👨</div>
+            <div class="birthday-name">Мой день рождения</div>
+            <div class="birthday-date">📅 28 октября</div>
+            <div class="birthday-timer" id="timerMy">Загрузка...</div>
+            <div class="birthday-label">До следующего дня рождения осталось</div>
+        </div>
+
+        <!-- Карточка для девушки -->
+        <div class="birthday-card">
+            <div class="birthday-emoji">👩</div>
+            <div class="birthday-name">День рождения моей любимой Ариночки</div>
+            <div class="birthday-date">📅 20 августа</div>
+            <div class="birthday-timer" id="timerHer">Загрузка...</div>
+            <div class="birthday-label">До следующего дня рождения осталось</div>
+        </div>
+
+        <!-- Особое сообщение, если сегодня чей-то ДР -->
+        <div id="specialMessage" class="confetti-message" style="display:none;">
+            🎉🎊 Сегодня особенный день! Поздравляем именинника(цу)! 🎊🎉
+        </div>
+
+        <!-- Кнопка с музыкой -->
+        <section style="text-align: center; margin: 30px 0;">
+            <button id="playMusicBtn" onclick="toggleMusic()" class="music-btn">
+                🎵 Под эту песню мы когда нибудь увидим море
+            </button>
+            <audio id="loveAudio" src="birthdaysong.mp3" preload="auto"></audio>
+        </section>
+
+        <!-- Чат поздравлений -->
+        <section class="chat-section">
+            <h2>🎈 Чат поздравлений</h2>
+            <p style="color: #888; font-size: 0.95em;">Оставь пожелание, и оно сохранится нетолько в сердце, но и тут!</p>
+            <div class="chat-messages" id="birthdayMessages">
+                <!-- Сообщения будут подгружаться -->
+            </div>
+            <div class="chat-input">
+                <div class="chat-author-select">
+                    <span style="font-weight: bold; color: #b34180;">Кто пишет:</span>
+                    <label><input type="radio" name="birthdayAuthor" value="Я" checked> Я ❤️</label>
+                    <label><input type="radio" name="birthdayAuthor" value="Ариночка 🌸"> Ариночка 🌸</label>
+                </div>
+                <div class="chat-input-row">
+                    <input type="text" id="birthdayMessageInput" placeholder="Твоё поздравление самое желанное...">
+                    <button onclick="sendBirthdayMessage()">Отправить 💌</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ссылка на главную -->
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="index.html" class="back-link">← Вернуться на главную</a>
+        </div>
+
+        <footer>
+            <p>Сделано с любовью ❤️</p>
+        </footer>
+    </div>
+
+    <!-- Подключаем Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+  <script>
+    // =============================================
+    // 1. ТАЙМЕРЫ ДО ДНЕЙ РОЖДЕНИЯ
+    // =============================================
+    const myBirthday = { month: 10, day: 28 };   // измените на свои
+    const herBirthday = { month: 08, day: 20 }; // измените на свои
+
+    function getNextBirthday(birthday) {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        let nextDate = new Date(currentYear, birthday.month - 1, birthday.day);
+        if (nextDate < now) {
+            nextDate.setFullYear(currentYear + 1);
+        }
+        return nextDate;
+    }
+
+    function updateTimers() {
+        const now = new Date();
+
+        const nextMy = getNextBirthday(myBirthday);
+        const diffMy = Math.max(0, nextMy - now);
+        const daysMy = Math.floor(diffMy / (1000 * 60 * 60 * 24));
+        const hoursMy = Math.floor((diffMy % (86400000)) / (3600000));
+        const minutesMy = Math.floor((diffMy % 3600000) / 60000);
+        document.getElementById('timerMy').textContent = 
+            `${daysMy} дн ${hoursMy} ч ${minutesMy} мин`;
+
+        const nextHer = getNextBirthday(herBirthday);
+        const diffHer = Math.max(0, nextHer - now);
+        const daysHer = Math.floor(diffHer / (1000 * 60 * 60 * 24));
+        const hoursHer = Math.floor((diffHer % (86400000)) / (3600000));
+        const minutesHer = Math.floor((diffHer % 3600000) / 60000);
+        document.getElementById('timerHer').textContent = 
+            `${daysHer} дн ${hoursHer} ч ${minutesHer} мин`;
+    }
+
+    updateTimers();
+    setInterval(updateTimers, 60000);
+
+    // =============================================
+    // 2. ПРОВЕРКА, СЕГОДНЯ ЛИ ЧЕЙ-ТО ДР
+    // =============================================
+    (function checkBirthdayToday() {
+        const now = new Date();
+        const todayMonth = now.getMonth() + 1;
+        const todayDay = now.getDate();
+        let isBirthday = false;
+        if (todayMonth === myBirthday.month && todayDay === myBirthday.day) isBirthday = true;
+        if (todayMonth === herBirthday.month && todayDay === herBirthday.day) isBirthday = true;
+        if (isBirthday) {
+            const msg = document.getElementById('specialMessage');
+            if (msg) msg.style.display = 'block';
+        }
+    })();
+
+    // =============================================
+    // 3. МУЗЫКАЛЬНАЯ КНОПКА (глобальная)
+    // =============================================
+    function toggleMusic() {
+        const audio = document.getElementById('loveAudio');
+        const btn = document.getElementById('playMusicBtn');
+        if (audio.paused) {
+            audio.play()
+                .then(() => {
+                    btn.innerHTML = '⏸ Остановить музыку';
+                })
+                .catch(err => {
+                    alert('Не удалось воспроизвести музыку. Проверьте файл love_song.mp3.');
+                    console.error('Ошибка воспроизведения:', err);
+                });
+        } else {
+            audio.pause();
+            btn.innerHTML = '🎵 Послушай как звучат мои чувства к тебе';
+        }
+    }
+    window.toggleMusic = toggleMusic;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('loveAudio');
+        if (audio) {
+            audio.addEventListener('ended', function() {
+                const btn = document.getElementById('playMusicBtn');
+                if (btn) btn.innerHTML = '🎵 Под эту песню мы когда нибудь увидим море ';
+            });
+        }
+    });
+
+    // =============================================
+    // 4. ЧАТ ПОЗДРАВЛЕНИЙ (с годом отправки)
+    // Используем глобальную db из firebase-config.js
+    // =============================================
+    // НЕ ОБЪЯВЛЯЕМ const db - используем window.db
+
+    function sendBirthdayMessage() {
+        const input = document.getElementById('birthdayMessageInput');
+        const text = input.value.trim();
+        if (text === '') return;
+
+        const authorRadio = document.querySelector('input[name="birthdayAuthor"]:checked');
+        const author = authorRadio ? authorRadio.value : 'Я';
+
+        const now = new Date();
+        const year = now.getFullYear();
+
+        window.db.collection('birthday_messages').add({
+            text: text,
+            author: author,
+            year: year,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+            input.value = '';
+            input.focus();
+        })
+        .catch(err => alert('Ошибка отправки: ' + err.message));
+    }
+    window.sendBirthdayMessage = sendBirthdayMessage;
+
+    // Отправка по Enter
+    document.addEventListener('DOMContentLoaded', function() {
+        const input = document.getElementById('birthdayMessageInput');
+        if (input) {
+            input.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendBirthdayMessage();
+                }
+            });
+        }
+    });
+
+    // Подписка на сообщения
+    window.db.collection('birthday_messages')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot((snapshot) => {
+            const container = document.getElementById('birthdayMessages');
+            let html = '';
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const text = data.text || '';
+                const author = data.author || 'Аноним';
+                const year = data.year || new Date().getFullYear();
+                const msgClass = (author === 'Я') ? 'message-my' : 'message-her';
+                html += `
+                    <div class="${msgClass}" style="display: flex; justify-content: space-between; align-items: center; padding-right: 10px;">
+                        <div>
+                            <span class="message-author">${author}</span>
+                            ${text}
+                            <span class="message-year">${year}</span>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+            container.scrollTop = container.scrollHeight;
+        }, (error) => {
+            console.error('Ошибка загрузки чата:', error);
+            document.getElementById('birthdayMessages').innerHTML = '<p>Ошибка загрузки. Проверьте Firebase.</p>';
+        });
+</script>
+</body>
+</html>

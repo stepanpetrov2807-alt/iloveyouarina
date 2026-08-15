@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стихи для тебя ❤️</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Стили для страницы стихов */
+        .poem-card {
+            background: white;
+            border-radius: 30px;
+            padding: 25px 30px;
+            margin: 30px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+            border-left: 8px solid #d4538c;
+        }
+        .poem-title {
+            font-size: 1.8em;
+            color: #b34180;
+            font-weight: bold;
+        }
+        .poem-date {
+            color: #b38a9a;
+            font-size: 0.9em;
+            display: block;
+            margin-bottom: 10px;
+        }
+        .poem-text {
+            font-size: 1.15em;
+            line-height: 1.8;
+            color: #3d2c33;
+            white-space: pre-wrap;
+            font-family: 'Georgia', serif;
+            margin-bottom: 15px;
+        }
+        /* Лайки стихов */
+        .poem-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .like-btn {
+            background: none;
+            border: 2px solid #f0b6c8;
+            border-radius: 40px;
+            padding: 5px 18px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #d4538c;
+            font-weight: bold;
+        }
+        .like-btn:hover {
+            background: #fce4ec;
+            transform: scale(1.05);
+        }
+        /* Комментарии */
+        .comments-section {
+            margin-top: 15px;
+            border-top: 2px dashed #f0b6c8;
+            padding-top: 15px;
+        }
+        .comment {
+            background: #fcf5f7;
+            padding: 10px 15px;
+            border-radius: 15px;
+            margin: 8px 0;
+            font-size: 0.95em;
+        }
+        .comment strong {
+            color: #b34180;
+        }
+        .comment-input {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .comment-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 2px solid #f0d0da;
+            border-radius: 30px;
+            outline: none;
+        }
+        .comment-input button {
+            background: #d4538c;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .comment-input button:hover {
+            background: #b34180;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #d4538c;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px dashed #f0b6c8;
+        }
+        .back-link:hover { color: #b34180; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Мои стихи для тебя 🌹</h1>
+            <p>Читай, комментируй и ставь ❤️</p>
+        </header>
+		<!-- Кнопка с музыкой (для страницы стихов) -->
+<section style="text-align: center; margin: 30px 0;">
+    <button id="playMusicBtn" onclick="toggleMusic()" style="
+        background: linear-gradient(135deg, #d4538c, #b34180);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 60px;
+        font-size: 1.3em;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(212, 83, 140, 0.4);
+        transition: transform 0.2s;
+        border: 2px solid rgba(255,255,255,0.2);
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        🎵 Послушай как звучат мои чувства к тебе
+    </button>
+    <audio id="loveAudio" src="love_song.mp3" preload="auto"></audio>
+</section>
+
+        <!-- Блок со стихами (каждый стих обернут в poem-card с data-poem-id) -->
+        <section>
+            <!-- Стих 1 -->
+            <div class="poem-card" data-poem-id="poem1">
+                <div class="poem-title">«Бесконечность»</div>
+                <span class="poem-date">12 января 2026</span>
+                <div class="poem-text">
+Твои глаза — как два океана,
+В них утонуть хочу навеки.
+Твой смех — мелодия органа,
+В ней слышу я любви секреты.
+
+С тобою каждый миг — как чудо,
+Я забываю про печали.
+Ты — моё главное отсюда,
+И никуда мы не сбежали.
+                </div>
+                <div class="poem-actions">
+                    <button class="like-btn" onclick="likePoem('poem1')">❤️ <span id="poem1-likes">0</span></button>
+                </div>
+                <div class="comments-section" id="poem1-comments">
+                    <div class="comment-list" id="poem1-comment-list">
+                        <!-- Комментарии будут подгружаться сюда -->
+                    </div>
+                    <div class="comment-input">
+                        <input type="text" id="poem1-comment-input" placeholder="Напиши что-то...">
+                        <button onclick="addComment('poem1')">Отправить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Стих 2 -->
+            <div class="poem-card" data-poem-id="poem2">
+                <div class="poem-title">«Тёплый свет»</div>
+                <span class="poem-date">3 февраля 2026</span>
+                <div class="poem-text">
+Когда я вижу твою улыбку,
+Мир становится светлей.
+Ты — моя радость, моя ошибка,
+Что сделала меня сильней.
+
+Я не устану повторять,
+Как сильно я тебя люблю.
+Ты — моя муза, моя стать,
+И я тебя не уступлю.
+                </div>
+                <div class="poem-actions">
+                    <button class="like-btn" onclick="likePoem('poem2')">❤️ <span id="poem2-likes">0</span></button>
+                </div>
+                <div class="comments-section" id="poem2-comments">
+                    <div class="comment-list" id="poem2-comment-list"></div>
+                    <div class="comment-input">
+                        <input type="text" id="poem2-comment-input" placeholder="Напиши что-то...">
+                        <button onclick="addComment('poem2')">Отправить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Стих 3 -->
+            <div class="poem-card" data-poem-id="poem3">
+                <div class="poem-title">«Наша весна»</div>
+                <span class="poem-date">8 марта 2026</span>
+                <div class="poem-text">
+Ты расцвела в моей душе,
+Как первый ландыш в тишине.
+С тобою я забыл о сне,
+Всё кажется, что мы вдвоём...
+
+И пусть зима ещё бушует,
+Внутри меня уже весна.
+Ты моя нежность, моя сила,
+Ты — самая родная мне.
+                </div>
+                <div class="poem-actions">
+                    <button class="like-btn" onclick="likePoem('poem3')">❤️ <span id="poem3-likes">0</span></button>
+                </div>
+                <div class="comments-section" id="poem3-comments">
+                    <div class="comment-list" id="poem3-comment-list"></div>
+                    <div class="comment-input">
+                        <input type="text" id="poem3-comment-input" placeholder="Напиши что-то...">
+                        <button onclick="addComment('poem3')">Отправить</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Добавьте новые стихи по аналогии, меняя data-poem-id и id -->
+        </section>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="index.html" class="back-link">← Вернуться на главную</a>
+        </div>
+		<div style="text-align: center; margin: 20px 0;">
+    <a href="birthdays.html" style="display: inline-block; background: #f0b6c8; color: #b34180; padding: 12px 30px; border-radius: 40px; text-decoration: none; font-weight: bold; font-size: 1.1em; box-shadow: 0 4px 15px rgba(240, 182, 200, 0.4);">
+        🎂 Наши дни рождения
+    </a>
+</div>
+        <footer><p>Сделано с любовью ❤️</p></footer>
+    </div>
+
+    <!-- Подключаем Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+    // ============================================
+    // СКРИПТ ДЛЯ СТИХОВ (комментарии и лайки)
+    // Используем глобальную db из firebase-config.js
+    // ============================================
+
+    // ---- Функция лайка стиха ----
+    function likePoem(poemId) {
+        window.db.collection('poem_likes').doc(poemId).set({
+            count: firebase.firestore.FieldValue.increment(1)
+        }, { merge: true })
+        .catch(err => console.error('Ошибка лайка стиха:', err));
+    }
+    window.likePoem = likePoem;
+
+    // ---- Функция добавления комментария ----
+    function addComment(poemId) {
+        const input = document.getElementById(poemId + '-comment-input');
+        const text = input.value.trim();
+        if (text === '') return;
+        window.db.collection('poem_comments').add({
+            poemId: poemId,
+            text: text,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => { input.value = ''; })
+        .catch(err => alert('Ошибка отправки комментария: ' + err.message));
+    }
+    window.addComment = addComment;
+
+    // ---- Подписка на лайки ----
+    window.db.collection('poem_likes').onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+            const count = doc.data().count || 0;
+            const likesSpan = document.getElementById(doc.id + '-likes');
+            if (likesSpan) likesSpan.textContent = count;
+        });
+    }, (error) => {
+        console.error('Ошибка загрузки лайков:', error);
+    });
+
+    // ---- Подписка на комментарии ----
+    window.db.collection('poem_comments')
+        .orderBy('timestamp', 'asc')
+        .onSnapshot((snapshot) => {
+            // Очищаем все списки комментариев
+            document.querySelectorAll('.comment-list').forEach(el => el.innerHTML = '');
+            snapshot.forEach((doc) => {
+                const data = doc.data();
+                const poemId = data.poemId;
+                const text = data.text || '';
+                let timeStr = '';
+                if (data.timestamp) {
+                    const date = data.timestamp.toDate();
+                    timeStr = date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+                }
+                const commentHtml = `<div class="comment"><strong>❤️ ${timeStr}</strong> ${text}</div>`;
+                const list = document.getElementById(poemId + '-comment-list');
+                if (list) {
+                    list.innerHTML += commentHtml;
+                }
+            });
+        }, (error) => {
+            console.error('Ошибка загрузки комментариев:', error);
+        });
+
+    console.log('Страница стихов готова!');
+</script>
+<script>
+    // Музыкальная кнопка для страницы стихов
+    function toggleMusic() {
+        const audio = document.getElementById('loveAudio');
+        const btn = document.getElementById('playMusicBtn');
+        if (audio.paused) {
+            audio.play()
+                .then(() => {
+                    btn.innerHTML = '⏸ Остановить музыку';
+                })
+                .catch(err => {
+                    alert('Не удалось воспроизвести музыку. Проверьте файл love_song.mp3.');
+                    console.error('Ошибка воспроизведения:', err);
+                });
+        } else {
+            audio.pause();
+            btn.innerHTML = '🎵 Послушай как звучат мои чувства к тебе';
+        }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+        const audio = document.getElementById('loveAudio');
+        if (audio) {
+            audio.addEventListener('ended', function() {
+                const btn = document.getElementById('playMusicBtn');
+                if (btn) btn.innerHTML = '🎵 Послушай как звучат мои чувства к тебе';
+            });
+        }
+    });
+</script>
+</body>
+</html>

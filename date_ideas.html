@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Идеи для свиданий 💡</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .randomizer-container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 40px 30px;
+            background: white;
+            border-radius: 40px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .idea-display {
+            font-size: 2.2em;
+            color: #b34180;
+            padding: 30px 20px;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fceff3;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            border: 2px dashed #f0b6c8;
+            transition: 0.3s;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+        .idea-display.pop {
+            animation: pop 0.3s ease;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.9); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .random-btn {
+            background: linear-gradient(135deg, #d4538c, #b34180);
+            color: white;
+            border: none;
+            padding: 18px 50px;
+            border-radius: 60px;
+            font-size: 1.4em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(212, 83, 140, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .random-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 35px rgba(212, 83, 140, 0.6);
+        }
+        .random-btn:active {
+            transform: scale(0.95);
+        }
+        .like-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .like-btn {
+            background: none;
+            border: 2px solid #f0b6c8;
+            border-radius: 40px;
+            padding: 10px 25px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: 0.2s;
+            color: #d4538c;
+            font-weight: bold;
+            background: white;
+        }
+        .like-btn:hover {
+            background: #fce4ec;
+            transform: scale(1.05);
+        }
+        .like-count {
+            font-size: 1.5em;
+            color: #b34180;
+            font-weight: bold;
+            min-width: 40px;
+        }
+        .counter {
+            color: #888;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #d4538c;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px dashed #f0b6c8;
+        }
+        .back-link:hover { color: #b34180; }
+        .error-msg {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>💡 Идеи для свиданий</h1>
+            <p>Когда не знаешь, чем заняться – нажми на кнопку!</p>
+        </header>
+
+        <div class="randomizer-container">
+            <div class="idea-display" id="ideaDisplay">
+                Нажми на кнопку ↓
+            </div>
+
+            <button class="random-btn" onclick="showRandomIdea()">
+                🎲 Предложи идею
+            </button>
+
+            <div class="like-section">
+                <button class="like-btn" onclick="likeCurrentIdea()" id="likeBtn">
+                    ❤️ Нравится
+                </button>
+                <span class="like-count" id="likeCount">0</span>
+            </div>
+
+            <div class="counter" id="counter">Всего идей: 0</div>
+            <div class="error-msg" id="errorMsg" style="display:none;"></div>
+        </div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="index.html" class="back-link">← Вернуться на главную</a>
+        </div>
+
+        <footer>
+            <p>Сделано с любовью ❤️</p>
+        </footer>
+    </div>
+
+    <!-- Подключаем Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // =============================================
+        // 1. ВАШИ ИДЕИ ДЛЯ СВИДАНИЙ (меняйте как хотите)
+        // =============================================
+        const ideas = [
+            "🍕 Заказать пиццу и устроить киномарафон",
+            "🌳 Пойти на прогулку в парк",
+            "🎨 Устроить вечер рисования (акварель или просто карандаши)",
+            "🍰 Приготовить что-то вместе",
+            "🎮 Поиграть в настолки или видеоигры вдвоём",
+            "🚲 Взять велосипеды и прокатиться по набережной",
+            "🌌 Посмотреть на звёзды/закат",
+            "📸 Пойти на фотосессию с фотиком",
+            "📚 Пойти в книжный и выбрать друг другу книгу",
+            "🧩 Поиграть в словесную игру",
+            "🎤 Вместе послушать любимые песни",
+            "🧖‍♀️ Купаться",
+            "🏛️ Посетить музей или выставку",
+            "🎭 Сходить в театр или на концерт",
+            "🌅 Встретить рассвет или закат в красивом месте",
+            "🍣 Устроить вечер суши",
+            "🧘 Просто наслаждаться друг другом целый день",
+            "🎲 Сыграть в карты или любую другую долгую игру",
+            "🖼️ Сделать совместное фото и распечатать его",
+            "💌 Написать друг другу письма в будущее",
+			"🎥 Пойти в кинотеатр на фильм",
+        ];
+
+        // =============================================
+        // 2. ИСПОЛЬЗУЕМ ГЛОБАЛЬНУЮ db из firebase-config.js
+        // =============================================
+        // НЕ ОБЪЯВЛЯЕМ const db - используем window.db
+
+        let currentIdeaIndex = -1;
+        let currentIdeaId = '';
+        let isLiking = false;
+
+        // =============================================
+        // 3. ОТОБРАЖЕНИЕ СЛУЧАЙНОЙ ИДЕИ (глобальная)
+        // =============================================
+        function showRandomIdea() {
+            const display = document.getElementById('ideaDisplay');
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * ideas.length);
+            } while (newIndex === currentIdeaIndex && ideas.length > 1);
+            currentIdeaIndex = newIndex;
+            currentIdeaId = 'idea_' + currentIdeaIndex;
+
+            display.textContent = ideas[currentIdeaIndex];
+            display.classList.remove('pop');
+            void display.offsetWidth;
+            display.classList.add('pop');
+
+            loadLikes(currentIdeaId);
+        }
+        window.showRandomIdea = showRandomIdea;
+
+        // =============================================
+        // 4. ЗАГРУЗКА ЛАЙКОВ
+        // =============================================
+        function loadLikes(ideaId) {
+            const likeCountSpan = document.getElementById('likeCount');
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.style.display = 'none';
+
+            window.db.collection('date_ideas').doc(ideaId).get()
+                .then((doc) => {
+                    if (doc.exists) {
+                        likeCountSpan.textContent = doc.data().likes || 0;
+                    } else {
+                        likeCountSpan.textContent = '0';
+                    }
+                })
+                .catch((err) => {
+                    console.error('Ошибка загрузки лайков:', err);
+                    errorMsg.textContent = 'Не удалось загрузить лайки.';
+                    errorMsg.style.display = 'block';
+                    likeCountSpan.textContent = '?';
+                });
+        }
+
+        // =============================================
+        // 5. ЛАЙКНУТЬ ТЕКУЩУЮ ИДЕЮ (глобальная)
+        // =============================================
+        function likeCurrentIdea() {
+            if (isLiking || currentIdeaIndex === -1) return;
+            const btn = document.getElementById('likeBtn');
+            const likeCountSpan = document.getElementById('likeCount');
+            const errorMsg = document.getElementById('errorMsg');
+            errorMsg.style.display = 'none';
+
+            isLiking = true;
+            btn.disabled = true;
+
+            window.db.collection('date_ideas').doc(currentIdeaId).set({
+                likes: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true })
+            .then(() => {
+                return window.db.collection('date_ideas').doc(currentIdeaId).get();
+            })
+            .then((doc) => {
+                if (doc.exists) {
+                    likeCountSpan.textContent = doc.data().likes || 0;
+                } else {
+                    likeCountSpan.textContent = '1';
+                }
+                isLiking = false;
+                btn.disabled = false;
+            })
+            .catch((err) => {
+                console.error('Ошибка при лайке:', err);
+                errorMsg.textContent = 'Не удалось поставить лайк. Попробуйте позже.';
+                errorMsg.style.display = 'block';
+                isLiking = false;
+                btn.disabled = false;
+            });
+        }
+        window.likeCurrentIdea = likeCurrentIdea;
+
+        // =============================================
+        // 6. СЧЁТЧИК ОБЩЕГО КОЛИЧЕСТВА ИДЕЙ
+        // =============================================
+        document.getElementById('counter').textContent = `Всего идей: ${ideas.length}`;
+
+        // =============================================
+        // 7. ПРИ ЗАГРУЗКЕ ПОКАЗЫВАЕМ ПЕРВУЮ СЛУЧАЙНУЮ ИДЕЮ
+        // =============================================
+        window.onload = function() {
+            showRandomIdea();
+        };
+    </script>
+</body>
+</html>

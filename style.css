@@ -1,0 +1,191 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+body {
+    background: linear-gradient(135deg, #fce4ec, #f8e8e8);
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    padding: 30px 25px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.5);
+}
+
+header h1 {
+    color: #b34180;
+    font-size: 2.2em;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+header p {
+    text-align: center;
+    color: #8a6a7a;
+    font-size: 1.1em;
+    margin-top: 5px;
+}
+
+section {
+    margin-top: 40px;
+    background: rgba(255, 245, 247, 0.6);
+    padding: 25px 20px;
+    border-radius: 30px;
+    border: 1px solid #ffe2e8;
+}
+
+h2 {
+    color: #b34180;
+    font-size: 1.6em;
+    margin-bottom: 15px;
+    border-bottom: 3px dashed #f0b6c8;
+    padding-bottom: 10px;
+}
+
+/* ТАЙМЕР */
+.timer {
+    font-size: 3.5em;
+    font-weight: 800;
+    color: #d4538c;
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 60px;
+    box-shadow: inset 0 0 15px rgba(212, 83, 140, 0.1);
+    letter-spacing: 2px;
+}
+
+/* ДАТЫ */
+.dates-section ul {
+    list-style: none;
+    padding: 0;
+}
+.dates-section li {
+    background: white;
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 50px;
+    font-size: 1.1em;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    border-left: 8px solid #f0b6c8;
+}
+
+/* ГАЛЕРЕЯ */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+.gallery img, .gallery video {
+    width: 100%;
+    max-width: 350px;
+    border-radius: 25px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    border: 3px solid white;
+}
+.gallery img:hover, .gallery video:hover {
+    transform: scale(1.02);
+}
+.gallery p {
+    color: #b38a9a;
+    width: 100%;
+    text-align: center;
+}
+
+/* ЧАТ */
+.chat-messages {
+    background: white;
+    border-radius: 25px;
+    padding: 20px;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.03);
+}
+.chat-messages div {
+    background: #fceef2;
+    margin: 8px 0;
+    padding: 12px 18px;
+    border-radius: 20px 20px 20px 5px;
+    border-left: 4px solid #d4538c;
+    word-break: break-word;
+    color: #3d2c33;
+}
+.chat-messages div strong {
+    color: #b34180;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.chat-input input {
+    flex: 1;
+    padding: 15px 20px;
+    border: 2px solid #f0d0da;
+    border-radius: 60px;
+    font-size: 1em;
+    outline: none;
+    transition: 0.3s;
+    background: white;
+}
+.chat-input input:focus {
+    border-color: #d4538c;
+    box-shadow: 0 0 0 4px #fce4ec;
+}
+.chat-input button {
+    background: #d4538c;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    border-radius: 60px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+    box-shadow: 0 5px 15px rgba(212, 83, 140, 0.3);
+}
+.chat-input button:hover {
+    background: #b34180;
+    transform: scale(1.02);
+}
+
+footer {
+    margin-top: 40px;
+    text-align: center;
+    color: #b38a9a;
+    font-size: 0.95em;
+}
+/* ===== КНОПКИ НА ГЛАВНОЙ (единый размер) ===== */
+.main-btn {
+    display: inline-block;
+    min-width: 220px;        /* ширина кнопки */
+    max-width: 280px;        /* чтобы не вытягивались слишком сильно */
+    padding: 14px 20px;      /* внутренние отступы */
+    border-radius: 40px;     /* скругление */
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1em;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2px solid transparent; /* для акцента при наведении */
+}
+.main-btn:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+}

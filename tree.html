@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌳 Дерево любви</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background: linear-gradient(145deg, #f7f0ea, #fce8ec);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 60px;
+            padding: 30px 25px 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+            text-align: center;
+        }
+        h1 { color: #b34180; font-size: 2.2em; margin-bottom: 6px; }
+        .sub { color: #8a6a7a; font-size: 1.1em; margin-bottom: 20px; }
+
+        /* ===== ОДНО БОЛЬШОЕ ЭМОДЗИ ===== */
+        .tree-emoji {
+            font-size: 140px;
+            line-height: 1.4;
+            transition: transform 0.4s ease;
+            animation: pop 0.6s ease;
+            display: inline-block;
+        }
+        @keyframes pop {
+            0% { transform: scale(0.5); opacity: 0.3; }
+            70% { transform: scale(1.15); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .stage-label {
+            font-size: 1.6em;
+            font-weight: bold;
+            color: #b34180;
+            margin-top: 6px;
+        }
+        .stage-description {
+            color: #8a6a7a;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+        }
+
+        /* ===== ПРОГРЕСС ===== */
+        .progress-bar {
+            width: 80%;
+            height: 10px;
+            background: #efe0e4;
+            border-radius: 20px;
+            margin: 16px auto;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #b8d9c6, #f7c5d0, #f5b895);
+            border-radius: 20px;
+            transition: width 1s ease;
+            width: 0%;
+        }
+
+        .stats {
+            background: rgba(255,255,255,0.6);
+            border-radius: 40px;
+            padding: 16px 20px;
+            margin: 20px 0 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px 25px;
+            font-size: 0.95em;
+            color: #4a3a3a;
+        }
+        .stats span {
+            font-weight: bold;
+            color: #b34180;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin: 20px 0 10px;
+            color: #d4538c;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px dashed #f0b6c8;
+        }
+        .back-link:hover { color: #b34180; }
+        footer {
+            margin-top: 20px;
+            color: #b38a9a;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🌳 Дерево нашей любви</h1>
+    <p class="sub">Оно растёт вместе с нами</p>
+
+    <div id="treeDisplay">
+        <div class="tree-emoji" id="treeEmoji">🌱</div>
+        <div class="stage-label" id="stageLabel">Росток</div>
+        <div class="stage-description" id="stageDesc">Первые шаги нашей истории</div>
+    </div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+
+    <div class="stats" id="statsDisplay">Загрузка статистики...</div>
+
+    <div>
+        <a href="index.html" class="back-link">← Вернуться на главную</a>
+    </div>
+    <footer>Сделано с любовью ❤️</footer>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="firebase-config.js"></script>
+
+<script>
+    // =============================================
+    // 1. СБОР ДАННЫХ ИЗ FIREBASE
+    // =============================================
+    const collections = [
+        'messages',
+        'date_ideas',
+        'movies',
+        'poem_likes',
+        'birthday_messages'
+    ];
+
+    let totalEvents = 0;
+    let details = {};
+
+    function fetchAllCounts() {
+        const promises = collections.map(name =>
+            window.db.collection(name).get()
+                .then(snap => {
+                    const count = snap.size;
+                    details[name] = count;
+                    return count;
+                })
+                .catch(err => {
+                    console.warn('Ошибка загрузки коллекции', name, err);
+                    details[name] = 0;
+                    return 0;
+                })
+        );
+
+        Promise.all(promises).then(results => {
+            totalEvents = results.reduce((sum, val) => sum + val, 0);
+            updateUI();
+        }).catch(err => {
+            console.error('Ошибка при подсчёте:', err);
+            document.getElementById('statsDisplay').textContent = 'Не удалось загрузить статистику';
+        });
+    }
+
+    // =============================================
+    // 2. УРОВНИ
+    // =============================================
+    const stages = [
+        { min: 0, max: 9, emoji: '🌱', label: 'Росток', desc: 'Первые шаги нашей истории' },
+        { min: 10, max: 29, emoji: '🌿', label: 'Молодое растение', desc: 'Мы растём вместе' },
+        { min: 30, max: 59, emoji: '🌳', label: 'Крепкое дерево', desc: 'Наша любовь становится сильнее' },
+        { min: 60, max: 99, emoji: '🌸', label: 'Цветущее дерево', desc: 'Время расцвета' },
+        { min: 100, max: Infinity, emoji: '🍎', label: 'Дерево с плодами', desc: 'Мы собрали урожай счастья ❤️' }
+    ];
+
+    function getStage(count) {
+        for (let s of stages) {
+            if (count >= s.min && count <= s.max) return s;
+        }
+        return stages[0];
+    }
+
+    // =============================================
+    // 3. ОБНОВЛЕНИЕ UI
+    // =============================================
+    function updateUI() {
+        const stage = getStage(totalEvents);
+
+        // Обновляем эмодзи с анимацией
+        const emojiEl = document.getElementById('treeEmoji');
+        emojiEl.textContent = stage.emoji;
+        // Перезапускаем анимацию
+        emojiEl.style.animation = 'none';
+        void emojiEl.offsetWidth; // рефлоу
+        emojiEl.style.animation = 'pop 0.6s ease';
+
+        document.getElementById('stageLabel').textContent = stage.label;
+        document.getElementById('stageDesc').textContent = stage.desc;
+
+        // Прогресс до следующего уровня
+        const nextStage = stages.find(s => s.min > stage.min) || stage;
+        const currentProgress = totalEvents - stage.min;
+        const maxProgress = nextStage.max - stage.min;
+        const progressPercent = Math.min(100, (currentProgress / maxProgress) * 100);
+        document.getElementById('progressFill').style.width = progressPercent + '%';
+
+        // Статистика
+        const names = {
+            messages: '💬 Сообщения',
+            date_ideas: '💡 Идеи',
+            movies: '🎬 Фильмы',
+            poem_likes: '❤️ Лайки стихов',
+            birthday_messages: '🎂 Поздравления'
+        };
+        const statsText = Object.entries(details)
+            .filter(([k, v]) => v > 0)
+            .map(([k, v]) => `${names[k] || k}: ${v}`)
+            .join(' · ');
+        document.getElementById('statsDisplay').textContent = statsText || 'Пока нет событий';
+    }
+
+    // =============================================
+    // 4. ЗАПУСК
+    // =============================================
+    if (window.db) {
+        fetchAllCounts();
+        setInterval(fetchAllCounts, 30000);
+    } else {
+        document.getElementById('statsDisplay').textContent = 'Ошибка: Firebase не инициализирован';
+        console.error('window.db не определён. Проверьте firebase-config.js');
+    }
+</script>
+
+</body>
+</html>

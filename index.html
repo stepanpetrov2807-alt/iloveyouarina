@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наша история ❤️</title>
+    <!-- Подключаем наш стиль -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ❗ ЗАЩИТА ОТ ЧУЖИХ: простой пароль (введите свой) -->
+    <script>
+        // Поменяйте "YOUR_PASSWORD" на свой пароль, например "love2024"
+        if (prompt("Введите пароль, чтобы войти:") !== "1234") {
+            document.body.innerHTML = "<h1 style='text-align:center;margin-top:50px;'>Доступ запрещен</h1>";
+        }
+    </script>
+
+    <div class="container">
+        <!-- 1. ШАПКА -->
+        <header>
+            <h1>Наша история, любимая ❤️</h1>
+            <p>Сайт для нас двоих</p>
+        </header>
+
+        <!-- 2. ТАЙМЕР ОТНОШЕНИЙ (тут считаются дни) -->
+       <section class="timer-section">
+    <h2>Мы вместе с 5 декабря 2025 ❤️</h2>
+    <div class="timer" id="timerDisplay">Загрузка...</div>
+    <p style="text-align: center; margin-top: 10px; color: #b38a9a; font-size: 1.1em;">
+        С того дня прошло уже столько времени...
+    </p>
+     </section>
+	 <!-- Кнопка с музыкой -->
+<section style="text-align: center; margin: 30px 0;">
+    <button id="playMusicBtn" onclick="toggleMusic()" style="
+        background: linear-gradient(135deg, #d4538c, #b34180);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        border-radius: 60px;
+        font-size: 1.3em;
+        font-weight: bold;
+        cursor: pointer;
+        box-shadow: 0 8px 25px rgba(212, 83, 140, 0.4);
+        transition: transform 0.2s;
+        border: 2px solid rgba(255,255,255,0.2);
+    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        🎵 Послушай как звучат мои чувства к тебе
+    </button>
+    <!-- Скрытый аудио-элемент -->
+    <audio id="loveAudio" src="love_song.mp3" preload="auto"></audio>
+</section>
+
+        <!-- 3. ВАЖНЫЕ ДАТЫ (можно менять списком) -->
+        <section class="dates-section">
+            <h2>Наши важные даты</h2>
+            <ul>
+                <li>❤️ День знакомства: 17 августа 2025</li>
+                <li>💋 Первый поцелуй: 05 декабря 2025</li>
+                <li>✈️ Первое путешествие: 09 июня 2026</li>
+				<li>👫 Знакомство с друзьями: 27 июня 2026</li>
+                <!-- Добавьте сюда свои даты -->
+            </ul>
+        </section>
+
+        <!-- 4. ГАЛЕРЕЯ (фото и видео будут подгружаться) -->
+        <section class="gallery-section">
+            <h2>Наши моменты 📸</h2>
+            <div class="gallery" id="galleryContainer">
+                <!-- Сюда добавьте свои фото через тег img или видео -->
+                <!-- Пример: <img src="photo1.jpg" alt="Наше фото"> -->
+                <!-- Если хотите вставить видео: <video src="video.mp4" controls></video> -->
+				<img src="photo1.jpeg" alt="Наше фото в парке">
+<img src="photo2.jpeg" alt="Закат">
+<img src="photo3.jpeg" alt="Наше фото в парке">
+<img src="photo4.jpeg" alt="Наше фото в парке">
+<img src="photo5.jpeg" alt="Наше фото в парке">
+<img src="photo6.jpeg" alt="Наше фото в парке">
+<img src="photo7.jpeg" alt="Наше фото в парке">
+<img src="photo8.jpeg" alt="Наше фото в парке">
+<img src="photo9.jpg" alt="Наше фото в парке">
+<img src="photo10.jpg" alt="Наше фото в парке">
+<img src="photo11.jpg" alt="Наше фото в парке">
+                <p>Спасибо тебе за каждый миг рядом!</p>
+            </div>
+        </section>
+
+        <!-- 5. ЧАТ И ПОЗДРАВЛЕНИЯ (в реальном времени) -->
+        <section class="chat-section">
+    <h2>Наш чат / Стена признаний 💬</h2>
+    <div class="chat-messages" id="messagesList">
+        <!-- Тут будут появляться сообщения -->
+    </div>
+    <div class="chat-input">
+    <!-- ВЫБОР АВТОРА -->
+    <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 10px; flex-wrap: wrap;">
+        <span style="font-weight: bold; color: #b34180;">Кто пишет:</span>
+        <label style="cursor: pointer;">
+            <input type="radio" name="author" value="Я" checked> Я ❤️
+        </label>
+        <label style="cursor: pointer;">
+            <input type="radio" name="author" value="Аринка"> Аринка 🌸
+        </label>
+    </div>
+    <!-- ПОЛЕ ВВОДА И КНОПКА ОТПРАВИТЬ -->
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" id="messageInput" placeholder="я очень жду каждое твоё сообщение...">
+        <button onclick="sendMessage()">Отправить ❤️</button>
+    </div>
+</div>
+</section>
+<div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 30px 0;">
+    
+    <!-- Стихи для тебя (розово-красный градиент) -->
+    <a href="poems.html" class="main-btn" style="
+        background: linear-gradient(135deg, #f28b9c, #d6336c);
+        color: white;
+        box-shadow: 0 5px 20px rgba(214, 51, 108, 0.3);
+    ">
+        📖 Стихи для тебя
+    </a>
+
+    <!-- Дни рождения (розовый градиент) -->
+    <a href="birthdays.html" class="main-btn" style="
+        background: linear-gradient(135deg, #f8c8d8, #d48a9e);
+        color: #5a2e3a;
+        box-shadow: 0 4px 15px rgba(212, 138, 158, 0.4);
+    ">
+        🎂 Дни рождения
+    </a>
+
+    <!-- Идеи для свиданий (персиково-бежевый градиент) -->
+    <a href="date_ideas.html" class="main-btn" style="
+        background: linear-gradient(135deg, #fae3c0, #e8c49a);
+        color: #6b4a2e;
+        box-shadow: 0 4px 15px rgba(232, 196, 154, 0.5);
+    ">
+        💡 Идеи для свиданий
+    </a>
+
+    <!-- Наш кинотеатр (мятно-зелёный градиент) -->
+    <a href="movies.html" class="main-btn" style="
+        background: linear-gradient(135deg, #d4eee8, #a8cdc2);
+        color: #2a5a4a;
+        box-shadow: 0 4px 15px rgba(168, 205, 194, 0.5);
+    ">
+        🎬 Наш кинотеатр
+    </a>
+	<a href="tree.html" class="main-btn" style="
+        background: linear-gradient(135deg, #a8d5a2, #6da56a);
+        color: #1e4a1a;
+        box-shadow: 0 4px 15px rgba(109, 165, 106, 0.5);
+    ">
+        🌳 Дерево любви
+    </a>
+</div>
+
+        <footer>
+            <p>Сделано с любовью специально для тебя 🌹</p>
+        </footer>
+    </div>
+
+    <!-- 🔥 ПОДКЛЮЧАЕМ FIREBASE (библиотеки от Google) -->
+    <!-- Подключаем Firebase (библиотеки) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+<!-- Подключаем общий конфиг -->
+<script src="firebase-config.js"></script>
+
+<!-- Подключаем основной скрипт -->
+<script src="script.js"></script>
+    
+    <!-- ПОДКЛЮЧАЕМ НАШ СКРИПТ -->
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наш кинотеатр 🎬</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .movie-form {
+            background: white;
+            border-radius: 30px;
+            padding: 25px 20px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        }
+        .movie-form input, .movie-form select {
+            width: 100%;
+            padding: 12px 18px;
+            margin: 8px 0;
+            border: 2px solid #f0d0da;
+            border-radius: 30px;
+            font-size: 1em;
+            outline: none;
+            transition: 0.3s;
+            background: white;
+        }
+        .movie-form input:focus, .movie-form select:focus {
+            border-color: #d4538c;
+            box-shadow: 0 0 0 4px #fce4ec;
+        }
+        .movie-form .row {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .movie-form .row > * {
+            flex: 1;
+        }
+        .movie-form button {
+            background: #d4538c;
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            border-radius: 60px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 5px 15px rgba(212, 83, 140, 0.3);
+            margin-top: 10px;
+        }
+        .movie-form button:hover {
+            background: #b34180;
+            transform: scale(1.02);
+        }
+
+        .movie-item {
+            background: white;
+            border-radius: 20px;
+            padding: 18px 20px;
+            margin: 12px 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            border-left: 6px solid #f0b6c8;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .movie-item .info {
+            flex: 2;
+            min-width: 200px;
+        }
+        .movie-item .info .title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #b34180;
+        }
+        .movie-item .info .meta {
+            color: #888;
+            font-size: 0.9em;
+        }
+        .movie-item .info .note {
+            color: #555;
+            font-style: italic;
+            font-size: 0.95em;
+            margin-top: 5px;
+        }
+        .movie-item .actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .movie-item .actions select, .movie-item .actions input {
+            padding: 6px 12px;
+            border: 2px solid #f0d0da;
+            border-radius: 30px;
+            font-size: 0.9em;
+            background: white;
+            outline: none;
+        }
+        .movie-item .actions .stars {
+            display: flex;
+            gap: 3px;
+        }
+        .movie-item .actions .star {
+            cursor: pointer;
+            font-size: 1.4em;
+            color: #ddd;
+            transition: 0.2s;
+        }
+        .movie-item .actions .star.active {
+            color: #f5c518;
+        }
+        .movie-item .delete-btn {
+            background: #fce4ec;
+            color: #d4538c;
+            border: none;
+            border-radius: 40px;
+            padding: 5px 14px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .movie-item .delete-btn:hover {
+            background: #f8d7da;
+            color: #dc3545;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 40px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-wish {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-watched {
+            background: #d4edda;
+            color: #155724;
+        }
+        .filter-bar {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 15px 0;
+        }
+        .filter-bar button {
+            background: white;
+            border: 2px solid #f0b6c8;
+            border-radius: 40px;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #b34180;
+            transition: 0.2s;
+        }
+        .filter-bar button.active {
+            background: #d4538c;
+            color: white;
+            border-color: #d4538c;
+        }
+        .filter-bar button:hover {
+            transform: scale(1.05);
+        }
+        .back-link {
+            display: inline-block;
+            margin: 20px 0;
+            color: #d4538c;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px dashed #f0b6c8;
+        }
+        .back-link:hover { color: #b34180; }
+        .empty-msg {
+            text-align: center;
+            color: #b38a9a;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎬 Наш кинотеатр</h1>
+            <p>Фильмы, которые мы хотим посмотреть или уже посмотрели</p>
+        </header>
+
+        <!-- Форма добавления фильма -->
+        <div class="movie-form">
+            <div class="row">
+                <input type="text" id="movieTitle" placeholder="Название фильма" required>
+                <input type="text" id="movieYear" placeholder="Год (например, 2023)">
+            </div>
+            <div class="row">
+                <input type="text" id="movieGenre" placeholder="Жанр">
+                <select id="movieStatus">
+                    <option value="wish">Хочу посмотреть</option>
+                    <option value="watched">Посмотрели</option>
+                </select>
+            </div>
+            <input type="text" id="movieNote" placeholder="Заметка (например, 'Посмотреть в выходные')">
+            <button onclick="addMovie()">➕ Добавить фильм</button>
+        </div>
+
+        <!-- Фильтр -->
+        <div class="filter-bar">
+            <button class="active" data-filter="all" onclick="setFilter('all')">Все</button>
+            <button data-filter="wish" onclick="setFilter('wish')">Хочу посмотреть</button>
+            <button data-filter="watched" onclick="setFilter('watched')">Посмотрели</button>
+        </div>
+
+        <!-- Список фильмов -->
+        <div id="movieList"></div>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <a href="index.html" class="back-link">← Вернуться на главную</a>
+        </div>
+        <footer>
+            <p>Сделано с любовью ❤️</p>
+        </footer>
+    </div>
+
+    <!-- Подключаем Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+    <script>
+        // =============================================
+        // ИСПОЛЬЗУЕМ ГЛОБАЛЬНУЮ db
+        // =============================================
+        let currentFilter = 'all';
+
+        // =============================================
+        // ДОБАВИТЬ ФИЛЬМ
+        // =============================================
+        function addMovie() {
+            const title = document.getElementById('movieTitle').value.trim();
+            const year = document.getElementById('movieYear').value.trim();
+            const genre = document.getElementById('movieGenre').value.trim();
+            const status = document.getElementById('movieStatus').value;
+            const note = document.getElementById('movieNote').value.trim();
+
+            if (!title) {
+                alert('Введите название фильма!');
+                return;
+            }
+
+            window.db.collection('movies').add({
+                title: title,
+                year: year || '',
+                genre: genre || '',
+                status: status,
+                note: note || '',
+                rating: 0, // 0-5 звёзд
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then(() => {
+                document.getElementById('movieTitle').value = '';
+                document.getElementById('movieYear').value = '';
+                document.getElementById('movieGenre').value = '';
+                document.getElementById('movieNote').value = '';
+                document.getElementById('movieStatus').value = 'wish';
+            })
+            .catch(err => alert('Ошибка добавления: ' + err.message));
+        }
+        window.addMovie = addMovie;
+
+        // =============================================
+        // ОБНОВИТЬ СТАТУС
+        // =============================================
+        function updateStatus(docId, newStatus) {
+            window.db.collection('movies').doc(docId).update({
+                status: newStatus
+            }).catch(err => console.error('Ошибка обновления статуса:', err));
+        }
+        window.updateStatus = updateStatus;
+
+        // =============================================
+        // ОБНОВИТЬ ОЦЕНКУ
+        // =============================================
+        function updateRating(docId, rating) {
+            window.db.collection('movies').doc(docId).update({
+                rating: rating
+            }).catch(err => console.error('Ошибка обновления оценки:', err));
+        }
+        window.updateRating = updateRating;
+
+        // =============================================
+        // ОБНОВИТЬ ЗАМЕТКУ
+        // =============================================
+        function updateNote(docId, newNote) {
+            window.db.collection('movies').doc(docId).update({
+                note: newNote
+            }).catch(err => console.error('Ошибка обновления заметки:', err));
+        }
+        window.updateNote = updateNote;
+
+        // =============================================
+        // УДАЛИТЬ ФИЛЬМ
+        // =============================================
+        function deleteMovie(docId) {
+            if (confirm('Удалить фильм из списка?')) {
+                window.db.collection('movies').doc(docId).delete()
+                    .catch(err => alert('Ошибка удаления: ' + err.message));
+            }
+        }
+        window.deleteMovie = deleteMovie;
+
+        // =============================================
+        // ФИЛЬТР
+        // =============================================
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-bar button').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.filter === filter);
+            });
+        }
+        window.setFilter = setFilter;
+
+        // =============================================
+        // ОТРИСОВКА СПИСКА
+        // =============================================
+        window.db.collection('movies')
+            .orderBy('createdAt', 'desc')
+            .onSnapshot((snapshot) => {
+                const container = document.getElementById('movieList');
+                let html = '';
+                let count = 0;
+
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    const status = data.status || 'wish';
+                    // Фильтр
+                    if (currentFilter !== 'all' && status !== currentFilter) return;
+
+                    count++;
+                    const title = data.title || 'Без названия';
+                    const year = data.year || '';
+                    const genre = data.genre || '';
+                    const note = data.note || '';
+                    const rating = data.rating || 0;
+                    const statusLabel = status === 'wish' ? 'Хочу посмотреть' : 'Посмотрели';
+                    const statusClass = status === 'wish' ? 'status-wish' : 'status-watched';
+
+                    // Звёзды
+                    let starsHtml = '';
+                    for (let i = 1; i <= 5; i++) {
+                        starsHtml += `<span class="star ${i <= rating ? 'active' : ''}" onclick="updateRating('${id}', ${i})">★</span>`;
+                    }
+
+                    html += `
+                        <div class="movie-item">
+                            <div class="info">
+                                <div>
+                                    <span class="title">${title}</span>
+                                    <span class="status-badge ${statusClass}">${statusLabel}</span>
+                                </div>
+                                <div class="meta">${year} ${genre ? '· ' + genre : ''}</div>
+                                <div class="note">
+                                    <input type="text" value="${note}" placeholder="Заметка..." 
+                                        style="border:none;background:transparent;width:100%;padding:5px 0;color:#555;font-style:italic;"
+                                        onchange="updateNote('${id}', this.value)">
+                                </div>
+                            </div>
+                            <div class="actions">
+                                <select onchange="updateStatus('${id}', this.value)">
+                                    <option value="wish" ${status === 'wish' ? 'selected' : ''}>Хочу посмотреть</option>
+                                    <option value="watched" ${status === 'watched' ? 'selected' : ''}>Посмотрели</option>
+                                </select>
+                                <div class="stars">${starsHtml}</div>
+                                <button class="delete-btn" onclick="deleteMovie('${id}')">✕</button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                if (count === 0) {
+                    html = `<div class="empty-msg">😌 Фильмов пока нет. Добавьте первый!</div>`;
+                }
+
+                container.innerHTML = html;
+            }, (error) => {
+                console.error('Ошибка загрузки фильмов:', error);
+                document.getElementById('movieList').innerHTML = '<p style="color:red;">Ошибка загрузки. Проверьте Firebase.</p>';
+            });
+
+        // =============================================
+        // ПРИ ЗАГРУЗКЕ ПОКАЗЫВАЕМ ВСЕ ФИЛЬМЫ
+        // =============================================
+        // onSnapshot уже работает, ничего дополнительно не нужно.
+    </script>
+</body>
+</html>
